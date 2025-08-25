@@ -7,9 +7,9 @@ const app = express();
 const PORT = 3000;
 
 app.use(bodyParser.json());
-app.use(express.static("public"));
+app.use(express.static(__dirname));  // 루트 폴더 기준 static 제공
 
-const dataFile = path.join(__dirname, "data", "estimates.json");
+const dataFile = path.join(__dirname, "estimates.json");
 
 // 견적 저장
 app.post("/estimate", (req, res) => {
