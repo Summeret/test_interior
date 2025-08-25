@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>견적 리스트</title>
+    <link rel="stylesheet" href="../styles/reset.css">
+    <link rel="stylesheet" href="../styles/style.css">
+    <style>
+        main {
+            
+        }
+        table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+        th, td { border: 1px solid #aaa; padding: 8px; text-align: left; }
+        th { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>저장된 견적서</h1>
+        <table id="estimateTable">
+            <thead>
+            <tr>
+                <th>고객명</th>
+                <th>금액</th>
+                <th>설명</th>
+                <th>등록일</th>
+                <th>상태</th>
+                <th>동작</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br>
+        <button id="downloadBtn">CSV로 다운로드</button>
+        <p><a href="main.html">메인으로 돌아가기</a></p>
+    </main>
+    <script>
+    async function loadEstimates() {
+        const res = await fetch("/estimates");
+        const estimates = await res.json();
+        const tbody = document.querySelector("#estimateTable tbody");
+        tbody.innerHTML = estimates.map(e => `
+        <tr>
+            <td>${e.customer}</td>
+            <td>${e.price}원</td>
+            <td>${e.description || ""}</td>
+            <td>${new Date(e.createdAt).toLocaleString()}</td>
+            <td>${e.completed ? "완료" : "진행중"}</td>
+            <td>
+            ${!e.completed ? `<button onclick="completeEstimate(${e.id})">완료</button>` : ""}
+            <button onclick="deleteEstimate(${e.id})">삭제</button>
+            </td>
+        </tr>
+        `).join("");
+    }
+
+    async function completeEstimate(id) {
+        await fetch(`/estimate/${id}/complete`, { method: "PATCH" });
+        loadEstimates();
+    }
+
+    async function deleteEstimate(id) {
+        if(!confirm("정말 삭제하시겠습니까?")) return;
+        await fetch(`/estimate/${id}`, { method: "DELETE" });
+        loadEstimates();
+    }
+
+    document.getElementById("downloadBtn").addEventListener("click", async () => {
+        const res = await fetch("/estimates");
+        const estimates = await res.json();
+        const csv = [
+        ["고객명","금액","설명","등록일","상태"],
+        ...estimates.map(e => [e.customer,e.price,e.description || "",e.createdAt,e.completed ? "완료":"진행중"])
+        ].map(r => r.join(",")).join("\n");
+        const blob = new Blob([csv], {type:"text/csv"});
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "estimates.csv";
+        a.click();
+    });
+
+    loadEstimates();
+    </script>
+</body>
+</html>
