@@ -3,25 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <title>견적 입력</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../styles/reset.css">
+    <link rel="stylesheet" href="../styles/style.css">
     <style>
         .wrap {
             text-align: center;
             background-color: #FAFAF8;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+        form {
+            display: flex; flex-flow: column nowrap; gap:10px;
+            width:max-content;  margin:0 auto 10px;
+        }
+        form input {
+            width:200px;
+            padding:10px 20px;
+        }
+        form textarea {
+            width:200px; height:200px;
+            padding:10px 10px;
+        }
+        form button {
+            width:200px; padding:5px 0;
+            border:1px solid #1B3C53;
+        }
+
+        p {
+            width:200px; padding:5px 0;
+            margin: 0 auto;
+            border:1px solid #1B3C53;
+        }
+
+        form button:hover,
+        p:hover {
+            border:1px solid #1B3C53;
+            background-color: #1B3C53;
+            color:#FAFAF8;
+        }
+        p:hover a {
+            color:#FAFAF8;
+
         }
     </style>
 </head>
 <body>
     <div class="wrap">
         <h1>견적 입력</h1>
-    <form id="estimateForm">
-        <input type="text" name="customer" placeholder="고객명" required><br>
-        <input type="text" name="address" placeholder="주소"><br>
-        <input type="number" name="price" placeholder="금액" required><br>
-        <textarea name="description" placeholder="설명"></textarea><br>
-        <button type="submit">저장</button>
-    </form>
-    <p><a href="index.html">메인으로 돌아가기</a></p>
+        <form id="estimateForm">
+            <input type="text" name="customer" placeholder="고객명" required><br>
+            <input type="text" name="address" placeholder="주소"><br>
+            <input type="number" name="price" placeholder="금액" required><br>
+            <textarea name="description" placeholder="설명"></textarea><br>
+            <button type="submit">저장</button>
+        </form>
+        <p><a href="index.html">메인으로 돌아가기</a></p>
     </div>
 
     <script>
