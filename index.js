@@ -49,4 +49,4 @@ app.delete("/estimate/:id", (req, res) => {
     res.json({ message: "견적 삭제 완료" });
 });
 
-app.listen(PORT, () => console.log(`서버 실행 중: http://localhost:${PORT}/main.html`));
+app.listen(PORT, () => console.log(`서버 실행 중: http://localhost:${PORT}/index.html`));
